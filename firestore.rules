@@ -1,0 +1,33 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function ownsNewRecord() {
+      return signedIn()
+        && request.resource.data.userId == request.auth.uid;
+    }
+
+    match /cycles/{recordId} {
+      allow create: if ownsNewRecord();
+      allow read: if signedIn()
+        && resource.data.userId == request.auth.uid;
+      allow update, delete: if signedIn()
+        && resource.data.userId == request.auth.uid;
+    }
+
+    match /academicEvents/{recordId} {
+      allow create: if ownsNewRecord();
+      allow read: if signedIn()
+        && resource.data.userId == request.auth.uid;
+      allow update, delete: if signedIn()
+        && resource.data.userId == request.auth.uid;
+    }
+
+    // No other collections are available through these rules.
+  }
+}
