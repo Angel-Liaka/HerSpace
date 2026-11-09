@@ -1,4 +1,4 @@
-# HerSpace 🌸
+# HerSpace 
 
 HerSpace is a web application designed to help students manage their menstrual cycles alongside their academic schedules.
 
