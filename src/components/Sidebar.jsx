@@ -4,6 +4,8 @@ import {
   Home,
   Activity,
   CalendarDays,
+  Users,
+  BookOpen,
   LogOut,
 } from "lucide-react";
 
@@ -11,6 +13,8 @@ const links = [
   { name: "Dashboard", icon: Home },
   { name: "Cycle Tracker", icon: Activity },
   { name: "Academic Calendar", icon: CalendarDays },
+  { name: "HerCircle", icon: Users },
+  { name: "HerLearn", icon: BookOpen },
 ];
 
 export default function Sidebar({

@@ -27,6 +27,8 @@ import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
 import CycleTracker from "./components/CycleTracker";
 import AcademicCalendar from "./components/AcademicCalendar";
+import HerCircle from "./components/HerCircle";
+import HerLearn from "./components/HerLearn";
 
 import "./styles.css";
 
@@ -425,6 +427,7 @@ export default function App() {
           />
         )}
 
+       
         {page === "Academic Calendar" && (
           <AcademicCalendar
             eventTitle={eventTitle}
@@ -440,6 +443,14 @@ export default function App() {
             estimatedPeriodEnd={estimatedPeriodEnd}
             overlapEvents={overlapEvents}
           />
+        )}
+
+        {page === "HerCircle" && (
+          <HerCircle user={user} />
+        )}
+
+        {page === "HerLearn" && (
+          <HerLearn />
         )}
 
         <footer>

@@ -735,3 +735,199 @@ footer span {
     font-size: 25px;
   }
 }
+
+/* HERSPACE COMMUNITY */
+
+.community-page,
+.learn-page {
+  width: 100%;
+}
+
+.page-heading {
+  margin-bottom: 25px;
+}
+
+.page-heading h2 {
+  margin: 8px 0;
+}
+
+.community-compose,
+.community-post,
+.learn-card,
+.lesson-article {
+  background: white;
+  border: 1px solid #f0dfe8;
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.community-compose textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #ead6e0;
+  border-radius: 10px;
+  resize: vertical;
+  margin: 14px 0;
+  font: inherit;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-header small {
+  display: block;
+  color: #927f89;
+  margin-top: 5px;
+}
+
+.post-text {
+  line-height: 1.7;
+  white-space: pre-wrap;
+  margin: 20px 0;
+}
+
+.post-reactions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #f2e6ec;
+  padding-bottom: 15px;
+}
+
+.reaction,
+.icon-button,
+.comment-form button,
+.back-button {
+  border: none;
+  cursor: pointer;
+  background: #fff2f7;
+  color: #75465d;
+  border-radius: 20px;
+  padding: 8px 12px;
+}
+
+.reaction.active {
+  background: #f7d6e5;
+}
+
+.comment-count {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #927f89;
+  font-size: 13px;
+}
+
+.post-comments {
+  padding-top: 15px;
+}
+
+.comment {
+  background: #fff7fa;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.comment strong {
+  font-size: 13px;
+}
+
+.comment p {
+  margin: 5px 0 0;
+}
+
+.comment-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.comment-form input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #ead6e0;
+  border-radius: 20px;
+  padding: 11px 14px;
+}
+
+.empty-message {
+  text-align: center;
+  padding: 30px;
+  color: #927f89;
+}
+
+.icon-button {
+  background: transparent;
+}
+
+/* HERLEARN */
+
+.learn-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.learn-card {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.learn-card h3 {
+  margin: 14px 0 8px;
+}
+
+.learn-card p {
+  color: #806f79;
+  line-height: 1.6;
+  flex: 1;
+}
+
+.learn-card button {
+  margin-top: 12px;
+}
+
+.lesson-emoji {
+  font-size: 32px;
+}
+
+.lesson-article {
+  max-width: 800px;
+  margin-top: 20px;
+}
+
+.lesson-article h2 {
+  margin: 10px 0 25px;
+}
+
+.lesson-article p {
+  line-height: 1.9;
+  margin-bottom: 18px;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 650px) {
+  .learn-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .community-compose,
+  .community-post,
+  .learn-card,
+  .lesson-article {
+    padding: 16px;
+  }
+}
