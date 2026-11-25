@@ -1,3 +1,4 @@
+
 rules_version = '2';
 
 service cloud.firestore {
@@ -12,22 +13,148 @@ service cloud.firestore {
         && request.resource.data.userId == request.auth.uid;
     }
 
+    // CYCLE TRACKER
     match /cycles/{recordId} {
       allow create: if ownsNewRecord();
+
       allow read: if signedIn()
         && resource.data.userId == request.auth.uid;
+
       allow update, delete: if signedIn()
         && resource.data.userId == request.auth.uid;
     }
 
+    // ACADEMIC CALENDAR
     match /academicEvents/{recordId} {
       allow create: if ownsNewRecord();
+
       allow read: if signedIn()
         && resource.data.userId == request.auth.uid;
+
       allow update, delete: if signedIn()
         && resource.data.userId == request.auth.uid;
     }
 
-    // No other collections are available through these rules.
+    // HERCIRCLE: VALIDATE REACTIONS
+    function validReactionChange(field) {
+      let oldList = resource.data[field];
+      let newList = request.resource.data[field];
+
+      return signedIn()
+        && request.resource.data.diff(resource.data)
+          .affectedKeys().hasOnly([field])
+        && request.resource.data.diff(resource.data)
+          .affectedKeys().size() == 1
+        && oldList is list
+        && newList is list
+        && (
+          (
+            newList.size() == oldList.size() + 1
+            && newList.hasAll(oldList)
+            && newList.hasAny([request.auth.uid])
+            && !oldList.hasAny([request.auth.uid])
+          )
+          ||
+          (
+            oldList.size() == newList.size() + 1
+            && oldList.hasAll(newList)
+            && oldList.hasAny([request.auth.uid])
+            && !newList.hasAny([request.auth.uid])
+          )
+        );
+    }
+
+    // HERCIRCLE: VALIDATE NEW COMMENTS
+    function validCommentAppend() {
+      let oldComments = resource.data.comments;
+      let newComments = request.resource.data.comments;
+      let comment = newComments[newComments.size() - 1];
+
+      return signedIn()
+        && request.resource.data.diff(resource.data)
+          .affectedKeys().hasOnly(['comments'])
+        && request.resource.data.diff(resource.data)
+          .affectedKeys().size() == 1
+        && oldComments is list
+        && newComments is list
+        && newComments.size() == oldComments.size() + 1
+        && newComments.hasAll(oldComments)
+        && comment is map
+        && comment.keys().hasAll([
+          'text',
+          'authorId',
+          'authorName',
+          'createdAt'
+        ])
+        && comment.keys().hasOnly([
+          'text',
+          'authorId',
+          'authorName',
+          'createdAt'
+        ])
+        && comment.authorId == request.auth.uid
+        && comment.text is string
+        && comment.text.size() > 0
+        && comment.text.size() <= 500
+        && comment.authorName is string
+        && comment.createdAt is string;
+    }
+
+    // HERCIRCLE COMMUNITY POSTS
+    match /communityPosts/{postId} {
+
+      // All signed-in users can view community posts.
+      allow read: if signedIn();
+
+      // Users can publish their own posts.
+      allow create: if signedIn()
+        && request.resource.data.keys().hasAll([
+          'text',
+          'authorId',
+          'authorName',
+          'createdAt',
+          'hearts',
+          'hugs',
+          'likes',
+          'comments'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'text',
+          'authorId',
+          'authorName',
+          'createdAt',
+          'hearts',
+          'hugs',
+          'likes',
+          'comments'
+        ])
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 1000
+        && request.resource.data.authorName is string
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.hearts is list
+        && request.resource.data.hearts.size() == 0
+        && request.resource.data.hugs is list
+        && request.resource.data.hugs.size() == 0
+        && request.resource.data.likes is list
+        && request.resource.data.likes.size() == 0
+        && request.resource.data.comments is list
+        && request.resource.data.comments.size() == 0;
+
+      // Users can react or add comments.
+      allow update: if signedIn()
+        && (
+          validReactionChange('hearts')
+          || validReactionChange('hugs')
+          || validReactionChange('likes')
+          || validCommentAppend()
+        );
+
+      // Users can only delete their own posts.
+      allow delete: if signedIn()
+        && resource.data.authorId == request.auth.uid;
+    }
   }
 }
