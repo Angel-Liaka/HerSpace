@@ -16,6 +16,7 @@ import {
 import { db } from "../firebase";
 import { Heart, MessageCircle, Send, Trash2 } from "lucide-react";
 
+// Available community reactions
 const reactions = [
   { field: "hearts", emoji: "❤️", label: "Love" },
   { field: "hugs", emoji: "🤗", label: "Support" },
@@ -28,6 +29,7 @@ export default function HerCircle({ user }) {
   const [comments, setComments] = useState({});
   const [error, setError] = useState("");
 
+  // Load community posts in newest-first order
   useEffect(() => {
     const postsQuery = query(
       collection(db, "communityPosts"),
@@ -50,6 +52,7 @@ export default function HerCircle({ user }) {
     return unsubscribe;
   }, []);
 
+  // Publish a new community post
   async function createPost(event) {
     event.preventDefault();
 
@@ -74,6 +77,7 @@ export default function HerCircle({ user }) {
     }
   }
 
+  // Add or remove the current user's reaction
   async function reactToPost(post, field) {
     const currentUsers = post[field] || [];
     const alreadyReacted = currentUsers.includes(user.uid);
@@ -89,6 +93,7 @@ export default function HerCircle({ user }) {
     }
   }
 
+  // Add a comment to a post
   async function addComment(post) {
     const text = (comments[post.id] || "").trim();
 
@@ -116,6 +121,7 @@ export default function HerCircle({ user }) {
     }
   }
 
+  // Allow users to delete only their own posts
   async function removePost(post) {
     if (post.authorId !== user.uid) return;
 
@@ -130,11 +136,13 @@ export default function HerCircle({ user }) {
     }
   }
 
+  // Format Firestore timestamps for display
   function displayDate(timestamp) {
     if (!timestamp?.toDate) return "Just now";
     return timestamp.toDate().toLocaleString();
   }
 
+  // Display the community feed and post interactions
   return (
     <section className="community-page">
       <div className="page-heading">

@@ -9,6 +9,7 @@ export default function SmartOverlap({
   estimatedPeriodEnd,
   overlapEvents,
 }) {
+  // Display the estimated period window and overlapping academic events
   return (
     <section className="panel overlap-panel">
       <div className="panel-heading">

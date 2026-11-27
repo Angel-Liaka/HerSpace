@@ -1,4 +1,3 @@
-
 import {
   Heart,
   CalendarDays,
@@ -16,8 +15,10 @@ export default function Dashboard({
   nextPeriod,
   setPage,
 }) {
+  // Display the dashboard overview, stats and upcoming events
   return (
     <>
+      {/* Page heading and introduction */}
       <div className="page-intro">
         <div>
           <p className="eyebrow">YOUR OVERVIEW</p>
@@ -28,7 +29,9 @@ export default function Dashboard({
         </div>
       </div>
 
+      {/* Summary stat cards */}
       <div className="stats-grid">
+        {/* Total number of saved cycle records */}
         <article className="stat-card pink">
           <div className="stat-icon">
             <Heart size={20} />
@@ -39,6 +42,7 @@ export default function Dashboard({
           <small>Saved entries</small>
         </article>
 
+        {/* Total number of academic events */}
         <article className="stat-card purple">
           <div className="stat-icon">
             <CalendarDays size={20} />
@@ -49,6 +53,7 @@ export default function Dashboard({
           <small>In your calendar</small>
         </article>
 
+        {/* Estimated start date of the next period */}
         <article className="stat-card peach">
           <div className="stat-icon">
             <Activity size={20} />
@@ -66,6 +71,7 @@ export default function Dashboard({
         </article>
       </div>
 
+      {/* Upcoming academic events section */}
       <section className="panel">
         <div className="panel-heading">
           <div>
@@ -73,6 +79,7 @@ export default function Dashboard({
             <h3>Academic events</h3>
           </div>
 
+          {/* Button to open the full academic calendar */}
           <button
             className="text-button"
             onClick={() => setPage("Academic Calendar")}
@@ -81,6 +88,7 @@ export default function Dashboard({
           </button>
         </div>
 
+        {/* Show up to 5 upcoming events, or a message if there are none */}
         {upcomingEvents.length ? (
           upcomingEvents.slice(0, 5).map((event) => (
             <div className="event-row" key={event.id}>

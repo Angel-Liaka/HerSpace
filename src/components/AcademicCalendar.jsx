@@ -1,4 +1,3 @@
-
 import { Plus } from "lucide-react";
 
 import Field, { EmptyMessage } from "./Field";
@@ -20,6 +19,7 @@ export default function AcademicCalendar({
   estimatedPeriodEnd,
   overlapEvents,
 }) {
+  // Display the academic calendar, event form and saved events
   return (
     <>
       <div className="page-intro">
@@ -40,6 +40,7 @@ export default function AcademicCalendar({
           </div>
         </div>
 
+        {/* Form for adding academic events */}
         <form
           onSubmit={handleAddEvent}
           className="form-grid event-form"
@@ -95,6 +96,7 @@ export default function AcademicCalendar({
         </form>
       </section>
 
+      {/* Display all saved academic events */}
       <section className="panel">
         <div className="panel-heading">
           <div>
@@ -141,6 +143,7 @@ export default function AcademicCalendar({
         )}
       </section>
 
+      {/* Show events overlapping with the estimated period window */}
       <SmartOverlap
         nextPeriod={nextPeriod}
         estimatedPeriodEnd={estimatedPeriodEnd}

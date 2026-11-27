@@ -1,5 +1,6 @@
 
 export function today() {
+  // Get today's date in YYYY-MM-DD format
   const date = new Date();
 
   return `${date.getFullYear()}-${String(
@@ -10,6 +11,7 @@ export function today() {
 }
 
 export function addDays(dateString, days) {
+  // Add a specified number of days to a date
   const date = new Date(`${dateString}T12:00:00`);
 
   date.setDate(date.getDate() + days);
@@ -22,10 +24,12 @@ export function addDays(dateString, days) {
 }
 
 export function formatDate(dateString) {
+  // Handle missing dates before formatting
   if (!dateString) {
     return "No date";
   }
 
+  // Display dates in a readable format
   return new Date(`${dateString}T12:00:00`).toLocaleDateString(
     undefined,
     {

@@ -33,6 +33,7 @@ import HerLearn from "./components/HerLearn";
 import "./styles.css";
 
 export default function App() {
+  // Main application state
   const [user, setUser] = useState(null);
   const [authReady, setAuthReady] = useState(false);
   const [page, setPage] = useState("Dashboard");
@@ -56,7 +57,7 @@ export default function App() {
   const [eventDate, setEventDate] = useState(today());
   const [eventType, setEventType] = useState("Assignment");
 
-  // Check whether a user is signed in.
+  // Monitor Firebase authentication
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -66,7 +67,7 @@ export default function App() {
     return unsubscribe;
   }, []);
 
-  // Load the signed-in user's cycle records and academic events.
+  // Fetch the signed-in user's cycle and academic records
   useEffect(() => {
     if (!user) {
       setCycles([]);
@@ -84,6 +85,7 @@ export default function App() {
       where("userId", "==", user.uid)
     );
 
+    // Listen for real-time Firestore updates
     const stopCycles = onSnapshot(
       cycleQuery,
       (snapshot) => {
@@ -116,22 +118,19 @@ export default function App() {
     };
   }, [user]);
 
-  // Sort cycle records from newest to oldest.
+  // Organise records and calculate the estimated period overlap
   const sortedCycles = [...cycles].sort((a, b) =>
     (b.startDate || "").localeCompare(a.startDate || "")
   );
 
-  // Sort academic events from earliest to latest.
   const sortedEvents = [...events].sort((a, b) =>
     (a.date || "").localeCompare(b.date || "")
   );
 
-  // Keep events happening today or in the future.
   const upcomingEvents = sortedEvents.filter(
     (event) => event.date >= today()
   );
 
-  // Estimate the next period using the latest saved cycle.
   const nextPeriod = sortedCycles.length
     ? addDays(
         sortedCycles[0].startDate,
@@ -139,12 +138,10 @@ export default function App() {
       )
     : null;
 
-  // Estimate a five-day period window.
   const estimatedPeriodEnd = nextPeriod
     ? addDays(nextPeriod, 4)
     : null;
 
-  // Find academic events within the estimated period window.
   const overlapEvents = nextPeriod
     ? sortedEvents.filter(
         (event) =>
@@ -153,7 +150,7 @@ export default function App() {
       )
     : [];
 
-  // Register a new user or sign in an existing user.
+  // Handle user registration and login
   async function handleAuth(event) {
     event.preventDefault();
 
@@ -190,7 +187,7 @@ export default function App() {
     }
   }
 
-  // Sign out the current user.
+  // Handle user logout
   async function handleLogout() {
     try {
       await signOut(auth);
@@ -202,7 +199,7 @@ export default function App() {
     }
   }
 
-  // Save a new cycle record to Firestore.
+  // Validate and save menstrual cycle records
   async function handleAddCycle(event) {
     event.preventDefault();
 
@@ -241,7 +238,7 @@ export default function App() {
     }
   }
 
-  // Save a new academic event to Firestore.
+  // Validate and save academic events
   async function handleAddEvent(event) {
     event.preventDefault();
 
@@ -280,7 +277,7 @@ export default function App() {
     }
   }
 
-  // Show a loading screen until Firebase checks authentication.
+  // Display loading screen while checking authentication
   if (!authReady) {
     return (
       <main className="loading-screen">
@@ -290,7 +287,7 @@ export default function App() {
     );
   }
 
-  // Show the authentication page when the user is signed out.
+  // Display login or registration when no user is signed in
   if (!user) {
     return (
       <main className="auth-page">
@@ -374,7 +371,7 @@ export default function App() {
     );
   }
 
-  // Show the main application after the user signs in.
+  // Main application layout and page navigation
   return (
     <div className="app-shell">
       <Sidebar
@@ -427,7 +424,6 @@ export default function App() {
           />
         )}
 
-       
         {page === "Academic Calendar" && (
           <AcademicCalendar
             eventTitle={eventTitle}

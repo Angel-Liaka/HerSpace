@@ -9,6 +9,7 @@ import {
   LogOut,
 } from "lucide-react";
 
+// Navigation links displayed in the sidebar
 const links = [
   { name: "Dashboard", icon: Home },
   { name: "Cycle Tracker", icon: Activity },
@@ -23,6 +24,7 @@ export default function Sidebar({
   onLogout,
   user,
 }) {
+  // Display the sidebar navigation and signed-in user details
   return (
     <aside className="sidebar">
       <div className="brand">

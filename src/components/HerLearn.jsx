@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { ArrowLeft, BookOpen } from "lucide-react";
 
+// Learning resources displayed in HerLearn
 const lessons = [
   {
     title: "Understanding Your Cycle",
@@ -68,6 +69,7 @@ const lessons = [
 export default function HerLearn() {
   const [selectedLesson, setSelectedLesson] = useState(null);
 
+  // Display the selected lesson and its content
   if (selectedLesson) {
     return (
       <section className="learn-page">
@@ -91,6 +93,7 @@ export default function HerLearn() {
     );
   }
 
+  // Display all available learning lessons
   return (
     <section className="learn-page">
       <div className="page-heading">

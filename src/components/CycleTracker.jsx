@@ -1,4 +1,3 @@
-
 import { Plus } from "lucide-react";
 
 import Field, { EmptyMessage } from "./Field";
@@ -18,8 +17,10 @@ export default function CycleTracker({
   estimatedPeriodEnd,
   overlapEvents,
 }) {
+  // Display the cycle tracker, record form and cycle history
   return (
     <>
+      {/* Page heading and introduction */}
       <div className="page-intro">
         <div>
           <p className="eyebrow">WELLNESS</p>
@@ -30,6 +31,7 @@ export default function CycleTracker({
         </div>
       </div>
 
+      {/* Section for adding a new cycle record */}
       <section className="panel">
         <div className="panel-heading">
           <div>
@@ -38,7 +40,9 @@ export default function CycleTracker({
           </div>
         </div>
 
+        {/* Form for saving a period start date and cycle length */}
         <form onSubmit={handleAddCycle} className="form-grid">
+          {/* Start date cannot be in the future */}
           <Field label="Period start date">
             <input
               type="date"
@@ -49,6 +53,7 @@ export default function CycleTracker({
             />
           </Field>
 
+          {/* Cycle length limited to 15–60 days */}
           <Field label="Cycle length (days)">
             <input
               type="number"
@@ -62,6 +67,7 @@ export default function CycleTracker({
             />
           </Field>
 
+          {/* Submit button is disabled while saving */}
           <button className="primary-button form-action" disabled={busy}>
             <Plus size={17} />
             {busy ? "Saving..." : "Save cycle"}
@@ -69,6 +75,7 @@ export default function CycleTracker({
         </form>
       </section>
 
+      {/* Display all saved cycle records */}
       <section className="panel">
         <div className="panel-heading">
           <div>
@@ -81,6 +88,7 @@ export default function CycleTracker({
           </span>
         </div>
 
+        {/* Show each cycle record, or a message if there are none */}
         {sortedCycles.length ? (
           sortedCycles.map((cycle) => (
             <div className="history-row" key={cycle.id}>
@@ -96,6 +104,7 @@ export default function CycleTracker({
         )}
       </section>
 
+      {/* Show events overlapping with the estimated period window */}
       <SmartOverlap
         nextPeriod={nextPeriod}
         estimatedPeriodEnd={estimatedPeriodEnd}
